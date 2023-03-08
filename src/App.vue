@@ -1,32 +1,37 @@
 <template>
   <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
     <router-view/>
   </div>
 </template>
 
-<style lang="less">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script>
+
+export default {
+  mounted() {
+     if (localStorage.getItem('store')) {
+        this.$store.replaceState(Object.assign({},this.$store.state, JSON.parse(localStorage.getItem('store'))))
+      }
+      // 在页面刷新时将store保存到localStorage里
+      window.addEventListener('beforeunload', () => {
+        if(this.$store.state.isLogin)localStorage.setItem('store', JSON.stringify(this.$store.state))
+      })
+  },
 }
+</script>
 
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+<style>
+  #app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #18191C;
+    height: 100%;
   }
-}
+  html,body {
+    margin: 0;
+    padding: 0;
+  }
+  a {
+    text-decoration: none;
+  }
 </style>
